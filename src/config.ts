@@ -4,16 +4,16 @@ export const SITE: Site = {
   website: "https://site.twright.net", // replace this with your deployed domain
   author: "Tom Wright",
   profile: "",
-  desc: "A minimal, responsive and SEO-friendly Astro blog theme.",
+  desc: "Tom's personal page",
   title: "Tom's Page",
-  ogImage: "astropaper-og.jpg",
+  //ogImage: "astropaper-og.jpg",
   lightAndDarkMode: true,
   postPerIndex: 6,
   postPerPage: 6,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
   showArchives: false,
   editPost: {
-    url: "https://github.com/satnaing/astro-paper/edit/main/src/content/blog",
+    url: "https://github.com/tomwright0/tomwright0.github.io/tree/main/src/content/blog",
     text: "Suggest Changes",
     appendFilePath: true,
   },
