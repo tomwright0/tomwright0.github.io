@@ -1,14 +1,14 @@
 ---
-title: Starlink Performance in the Austrlian Outback
 author: Tom
-pubDatetime: 	2025-01-11T12:48:00Z
+pubDatetime: 2025-01-11T12:48:00Z
+title: Starlink Performance in the Austrlian Outback
 slug: starlink-performance-in-the-australian-outback
 featured: false
-tags:
- - internet
- - networking
- - starlink
 draft: false
+tags:
+  - internet
+  - networking
+  - starlink
 description:
   My Starlink performance metrics and writeup
 ---
