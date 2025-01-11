@@ -1,6 +1,6 @@
 ---
 author: Tom
-pubDatetime: 2025-01-11T12:48:00Z
+pubDatetime: 2025-01-10T12:48:00Z
 title: Starlink Performance in the Austrlian Outback
 slug: starlink-performance-in-the-australian-outback
 featured: false
