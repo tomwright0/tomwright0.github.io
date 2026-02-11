@@ -65,21 +65,10 @@ const FormattedDatetime = ({ pubDatetime, modDatetime }: DatetimesProps) => {
     year: "numeric",
     month: "short",
     day: "numeric",
+    timeZone: "Australia/Adelaide",
   });
 
-  const time = myDatetime.toLocaleTimeString(LOCALE.langTag, {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  return (
-    <>
-      <time dateTime={myDatetime.toISOString()}>{date}</time>
-      <span aria-hidden="true"> | </span>
-      <span className="sr-only">&nbsp;at&nbsp;</span>
-      <span className="text-nowrap">{time}</span>
-    </>
-  );
+  return <time dateTime={myDatetime.toISOString()}>{date}</time>;
 };
 
 const EditPost = ({ editPost, postId }: EditPostProps) => {
