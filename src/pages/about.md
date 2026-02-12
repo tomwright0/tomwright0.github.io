@@ -51,4 +51,4 @@ I am a dedicated IT professional seeking to advance in technical support, levera
 - Customer Service
 - Adaptabilitiy
 
-If you believe I could be the ideal candidate for your role, I invite you to reach out to me directly via email through my website. Just click the icon below to get started!
+If you believe I could be the ideal candidate for your role, I invite you to reach out via my [contact page](/contact/).
