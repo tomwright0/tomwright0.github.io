@@ -1,0 +1,138 @@
+---
+import { SITE } from "@config";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+---
+
+<Layout title={`Contact | ${SITE.title}`}>
+  <Header activeNav="contact" />
+  <Main pageTitle="Contact" pageDesc="Send me a message.">
+    <form id="contact-form" class="flex flex-col gap-4">
+      <div style="display:none" aria-hidden="true">
+        <label for="website">Website</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="name" class="text-skin-base font-medium">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          class="rounded border border-skin-line bg-skin-fill px-3 py-2 text-skin-base outline-none focus:border-skin-accent"
+        />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="message" class="text-skin-base font-medium">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          rows="6"
+          class="rounded border border-skin-line bg-skin-fill px-3 py-2 text-skin-base outline-none focus:border-skin-accent"
+        ></textarea>
+        <span id="word-count" class="text-sm text-skin-base opacity-70">0 / 300 words</span>
+      </div>
+
+      <button
+        type="submit"
+        class="rounded bg-skin-accent px-4 py-2 font-medium text-skin-inverted transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        Send Message
+      </button>
+
+      <p id="form-status" class="text-sm" aria-live="polite"></p>
+    </form>
+  </Main>
+  <Footer />
+</Layout>
+
+<script>
+  function setupContactForm() {
+    const form = document.getElementById("contact-form") as HTMLFormElement | null;
+    const messageInput = document.getElementById("message") as HTMLTextAreaElement | null;
+    const wordCountEl = document.getElementById("word-count");
+    const statusEl = document.getElementById("form-status");
+    const submitBtn = form?.querySelector("button[type='submit']") as HTMLButtonElement | null;
+
+    if (!form || !messageInput || !wordCountEl || !statusEl || !submitBtn) return;
+
+    const MAX_WORDS = 300;
+
+    function countWords(text: string): number {
+      const trimmed = text.trim();
+      if (!trimmed) return 0;
+      return trimmed.split(/\s+/).length;
+    }
+
+    messageInput.addEventListener("input", () => {
+      const count = countWords(messageInput.value);
+      wordCountEl.textContent = `${count} / ${MAX_WORDS} words`;
+      if (count > MAX_WORDS) {
+        wordCountEl.classList.add("text-red-500");
+        wordCountEl.classList.remove("opacity-70");
+      } else {
+        wordCountEl.classList.remove("text-red-500");
+        wordCountEl.classList.add("opacity-70");
+      }
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = (form.elements.namedItem("name") as HTMLInputElement).value.trim();
+      const message = messageInput.value.trim();
+      const honeypot = (form.elements.namedItem("website") as HTMLInputElement).value;
+
+      if (!name || !message) {
+        statusEl.textContent = "Please fill in all fields.";
+        statusEl.className = "text-sm text-red-500";
+        return;
+      }
+
+      if (countWords(message) > MAX_WORDS) {
+        statusEl.textContent = "Message exceeds 300 word limit.";
+        statusEl.className = "text-sm text-red-500";
+        return;
+      }
+
+      submitBtn.disabled = true;
+      statusEl.textContent = "Sending...";
+      statusEl.className = "text-sm text-skin-base opacity-70";
+
+      try {
+        const res = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, message, honeypot }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          statusEl.textContent = "Message sent! Thanks for reaching out.";
+          statusEl.className = "text-sm text-green-600";
+          form.reset();
+          wordCountEl.textContent = `0 / ${MAX_WORDS} words`;
+          wordCountEl.classList.remove("text-red-500");
+          wordCountEl.classList.add("opacity-70");
+        } else {
+          statusEl.textContent = data.error || "Something went wrong. Please try again.";
+          statusEl.className = "text-sm text-red-500";
+        }
+      } catch {
+        statusEl.textContent = "Network error. Please try again.";
+        statusEl.className = "text-sm text-red-500";
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
+  setupContactForm();
+  document.addEventListener("astro:after-swap", setupContactForm);
+</script>
