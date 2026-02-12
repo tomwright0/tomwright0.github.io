@@ -6,7 +6,7 @@ export const SITE: Site = {
   profile: "",
   desc: "Tom's personal page",
   title: "Tom's Page",
-  //ogImage: "astropaper-og.jpg",
+  ogImage: "",
   lightAndDarkMode: true,
   postPerIndex: 6,
   postPerPage: 6,
