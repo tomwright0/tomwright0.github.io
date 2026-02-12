@@ -34,8 +34,7 @@ const { searchList } = Astro.props;
 <div id="search-status" class="mt-8 hidden"></div>
 
 <ul id="search-results">
-  {searchList.map(({ title, description, data, slug }) => {
-    const { pubDatetime, modDatetime } = data;
+  {searchList.map(({ title, description, slug }) => {
     return (
       <li
         class="my-6 hidden"
