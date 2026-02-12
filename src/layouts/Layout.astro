@@ -98,7 +98,11 @@ const structuredData = {
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    {socialImageURL && <meta property="twitter:image" content={socialImageURL} />}
+    {
+      socialImageURL && (
+        <meta property="twitter:image" content={socialImageURL} />
+      )
+    }
 
     <!-- Google JSON-LD Structured data -->
     <script

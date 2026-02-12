@@ -21,11 +21,17 @@ const headerClass = "text-lg font-medium decoration-dashed hover:underline";
     href={href}
     class="inline-block text-lg font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
   >
-    {secHeading ? (
-      <h2 style={headerStyle} class={headerClass}>{title}</h2>
-    ) : (
-      <h3 style={headerStyle} class={headerClass}>{title}</h3>
-    )}
+    {
+      secHeading ? (
+        <h2 style={headerStyle} class={headerClass}>
+          {title}
+        </h2>
+      ) : (
+        <h3 style={headerStyle} class={headerClass}>
+          {title}
+        </h3>
+      )
+    }
   </a>
   <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} />
   <p>{description}</p>
