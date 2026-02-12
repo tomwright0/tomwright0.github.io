@@ -5,7 +5,7 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
-import Card from "@components/Card";
+import Card from "@components/Card.astro";
 import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import { SITE, SOCIALS } from "@config";
@@ -41,8 +41,10 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         <span class="sr-only">RSS Feed</span>
       </a> -->
 
-      <p>I'm Tom, welcome to my page! </p>
-      <p>This website is to serve as a blog for my personal IT related projects.</p>
+      <p>I'm Tom, welcome to my page!</p>
+      <p>
+        This website is to serve as a blog for my personal IT related projects.
+      </p>
       <p>Click about for more information about me!</p>
 
       {

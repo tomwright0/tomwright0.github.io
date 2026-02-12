@@ -1,0 +1,127 @@
+---
+import { slugifyStr } from "@utils/slugify";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  searchList: {
+    title: string;
+    description: string;
+    data: CollectionEntry<"blog">["data"];
+    slug: string;
+  }[];
+}
+
+const { searchList } = Astro.props;
+---
+
+<label class="relative block">
+  <span class="absolute inset-y-0 left-0 flex items-center pl-2 opacity-75">
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path
+        d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"
+      ></path>
+    </svg>
+    <span class="sr-only">Search</span>
+  </span>
+  <input
+    class="block w-full rounded border border-skin-fill/40 bg-skin-fill py-3 pl-10 pr-3 placeholder:italic focus:border-skin-accent focus:outline-none"
+    placeholder="Search for anything..."
+    type="text"
+    name="search"
+    id="search-input"
+    autocomplete="off"
+  />
+</label>
+
+<div id="search-status" class="mt-8 hidden"></div>
+
+<ul id="search-results">
+  {
+    searchList.map(({ title, description, slug }) => {
+      return (
+        <li
+          class="my-6 hidden"
+          data-title={title.toLowerCase()}
+          data-description={description.toLowerCase()}
+        >
+          <a
+            href={`/posts/${slug}/`}
+            class="inline-block text-lg font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
+          >
+            <h2
+              style={`view-transition-name: ${slugifyStr(title)}`}
+              class="text-lg font-medium decoration-dashed hover:underline"
+            >
+              {title}
+            </h2>
+          </a>
+          <p>{description}</p>
+        </li>
+      );
+    })
+  }
+</ul>
+
+<script>
+  function initSearch() {
+    const input = document.getElementById("search-input") as HTMLInputElement;
+    const status = document.getElementById("search-status")!;
+    const items =
+      document.querySelectorAll<HTMLLIElement>("#search-results li");
+
+    // Restore query from URL
+    const searchParams = new URLSearchParams(window.location.search);
+    const initialQuery = searchParams.get("q") || "";
+    if (initialQuery) {
+      input.value = initialQuery;
+      filterPosts(initialQuery);
+    }
+
+    // Focus input and place cursor at end
+    input.focus();
+    input.selectionStart = input.selectionEnd = input.value.length;
+
+    input.addEventListener("input", () => {
+      filterPosts(input.value);
+    });
+
+    function filterPosts(query: string) {
+      const q = query.toLowerCase().trim();
+
+      // Update URL
+      if (q.length > 0) {
+        const params = new URLSearchParams(window.location.search);
+        params.set("q", query);
+        history.replaceState(
+          history.state,
+          "",
+          window.location.pathname + "?" + params.toString()
+        );
+      } else {
+        history.replaceState(history.state, "", window.location.pathname);
+      }
+
+      if (q.length < 2) {
+        items.forEach(item => item.classList.add("hidden"));
+        status.classList.add("hidden");
+        return;
+      }
+
+      let count = 0;
+      items.forEach(item => {
+        const title = item.dataset.title || "";
+        const description = item.dataset.description || "";
+        const matches = title.includes(q) || description.includes(q);
+        item.classList.toggle("hidden", !matches);
+        if (matches) count++;
+      });
+
+      status.classList.remove("hidden");
+      status.textContent = `Found ${count} ${count === 1 ? "result" : "results"} for '${query}'`;
+    }
+  }
+
+  // Run on initial load and after Astro view transitions
+  initSearch();
+  document.addEventListener("astro:after-swap", initSearch);
+</script>

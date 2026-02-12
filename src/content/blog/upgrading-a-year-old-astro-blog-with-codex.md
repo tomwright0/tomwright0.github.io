@@ -11,8 +11,7 @@ tags:
   - security
   - devops
   - ai
-description:
-  How I used Codex to upgrade my older Astro blog to Astro 5, move to React 19, fix vulnerabilities, and resolve Cloudflare build issues quickly.
+description: How I used Codex to upgrade my older Astro blog to Astro 5, move to React 19, fix vulnerabilities, and resolve Cloudflare build issues quickly.
 ---
 
 Today I used Codex to upgrade this blog from a setup that was more than a year behind to a current, secure stack, and it took far less time than I expected.
