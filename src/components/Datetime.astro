@@ -7,6 +7,7 @@ interface Props {
   modDatetime?: string | Date | undefined | null;
   size?: "sm" | "lg";
   className?: string;
+  readingTime?: string;
   editPost?: CollectionEntry<"blog">["data"]["editPost"];
   postId?: CollectionEntry<"blog">["id"];
 }
@@ -16,6 +17,7 @@ const {
   modDatetime,
   size = "sm",
   className = "",
+  readingTime,
   editPost,
   postId,
 } = Astro.props;
@@ -69,6 +71,12 @@ const editPostText = editPost?.text ?? SITE?.editPost?.text ?? "Edit";
   }
   <span class={`italic ${size === "sm" ? "text-sm" : "text-base"}`}>
     <time datetime={myDatetime.toISOString()}>{date}</time>
+    {readingTime && (
+      <>
+        <span aria-hidden="true"> &bull; </span>
+        <span>{readingTime}</span>
+      </>
+    )}
     {
       size === "lg" && showEditPost && (
         <>
