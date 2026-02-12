@@ -35,7 +35,7 @@ import Footer from "@components/Footer.astro";
           rows="6"
           class="rounded border border-skin-line bg-skin-fill px-3 py-2 text-skin-base outline-none focus:border-skin-accent"
         ></textarea>
-        <span id="word-count" class="text-sm text-skin-base opacity-70">0 / 300 words</span>
+        <span id="char-count" class="text-sm text-skin-base opacity-70">0 / 260</span>
       </div>
 
       <button
@@ -55,29 +55,23 @@ import Footer from "@components/Footer.astro";
   function setupContactForm() {
     const form = document.getElementById("contact-form") as HTMLFormElement | null;
     const messageInput = document.getElementById("message") as HTMLTextAreaElement | null;
-    const wordCountEl = document.getElementById("word-count");
+    const charCountEl = document.getElementById("char-count");
     const statusEl = document.getElementById("form-status");
     const submitBtn = form?.querySelector("button[type='submit']") as HTMLButtonElement | null;
 
-    if (!form || !messageInput || !wordCountEl || !statusEl || !submitBtn) return;
+    if (!form || !messageInput || !charCountEl || !statusEl || !submitBtn) return;
 
-    const MAX_WORDS = 300;
-
-    function countWords(text: string): number {
-      const trimmed = text.trim();
-      if (!trimmed) return 0;
-      return trimmed.split(/\s+/).length;
-    }
+    const MAX_CHARS = 260;
 
     messageInput.addEventListener("input", () => {
-      const count = countWords(messageInput.value);
-      wordCountEl.textContent = `${count} / ${MAX_WORDS} words`;
-      if (count > MAX_WORDS) {
-        wordCountEl.classList.add("text-red-500");
-        wordCountEl.classList.remove("opacity-70");
+      const count = messageInput.value.length;
+      charCountEl.textContent = `${count} / ${MAX_CHARS}`;
+      if (count > MAX_CHARS) {
+        charCountEl.classList.add("text-red-500");
+        charCountEl.classList.remove("opacity-70");
       } else {
-        wordCountEl.classList.remove("text-red-500");
-        wordCountEl.classList.add("opacity-70");
+        charCountEl.classList.remove("text-red-500");
+        charCountEl.classList.add("opacity-70");
       }
     });
 
@@ -94,8 +88,8 @@ import Footer from "@components/Footer.astro";
         return;
       }
 
-      if (countWords(message) > MAX_WORDS) {
-        statusEl.textContent = "Message exceeds 300 word limit.";
+      if (message.length > MAX_CHARS) {
+        statusEl.textContent = "Message exceeds 260 character limit.";
         statusEl.className = "text-sm text-red-500";
         return;
       }
@@ -117,9 +111,9 @@ import Footer from "@components/Footer.astro";
           statusEl.textContent = "Message sent! Thanks for reaching out.";
           statusEl.className = "text-sm text-green-600";
           form.reset();
-          wordCountEl.textContent = `0 / ${MAX_WORDS} words`;
-          wordCountEl.classList.remove("text-red-500");
-          wordCountEl.classList.add("opacity-70");
+          charCountEl.textContent = `0 / ${MAX_CHARS}`;
+          charCountEl.classList.remove("text-red-500");
+          charCountEl.classList.add("opacity-70");
         } else {
           statusEl.textContent = data.error || "Something went wrong. Please try again.";
           statusEl.className = "text-sm text-red-500";

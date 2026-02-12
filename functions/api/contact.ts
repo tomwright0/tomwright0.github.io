@@ -36,10 +36,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     });
   }
 
-  const wordCount = message.trim().split(/\s+/).length;
-  if (wordCount > 300) {
+  if (message.trim().length > 260) {
     return new Response(
-      JSON.stringify({ error: "Message exceeds 300 word limit." }),
+      JSON.stringify({ error: "Message exceeds 260 character limit." }),
       { status: 400, headers }
     );
   }
