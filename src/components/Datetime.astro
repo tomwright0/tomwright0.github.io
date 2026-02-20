@@ -71,12 +71,14 @@ const editPostText = editPost?.text ?? SITE?.editPost?.text ?? "Edit";
   }
   <span class={`italic ${size === "sm" ? "text-sm" : "text-base"}`}>
     <time datetime={myDatetime.toISOString()}>{date}</time>
-    {readingTime && (
-      <>
-        <span aria-hidden="true"> &bull; </span>
-        <span>{readingTime}</span>
-      </>
-    )}
+    {
+      readingTime && (
+        <>
+          <span aria-hidden="true"> &bull; </span>
+          <span>{readingTime}</span>
+        </>
+      )
+    }
     {
       size === "lg" && showEditPost && (
         <>
