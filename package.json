@@ -2,8 +2,7 @@
   "name": "personal-site",
   "version": "4.7.0",
   "engines": {
-    "node": ">=20.3.0",
-    "npm": ">=9.6.5"
+    "bun": ">=1.0.0"
   },
   "scripts": {
     "dev": "astro dev",
