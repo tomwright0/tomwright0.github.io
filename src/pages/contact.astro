@@ -12,7 +12,13 @@ import Footer from "@components/Footer.astro";
     <form id="contact-form" class="flex flex-col gap-4">
       <div style="display:none" aria-hidden="true">
         <label for="website">Website</label>
-        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+        <input
+          type="text"
+          id="website"
+          name="website"
+          tabindex="-1"
+          autocomplete="off"
+        />
       </div>
 
       <div class="flex flex-col gap-1">
@@ -35,7 +41,9 @@ import Footer from "@components/Footer.astro";
           rows="6"
           class="rounded border border-skin-line bg-skin-fill px-3 py-2 text-skin-base outline-none focus:border-skin-accent"
         ></textarea>
-        <span id="char-count" class="text-sm text-skin-base opacity-70">0 / 260</span>
+        <span id="char-count" class="text-sm text-skin-base opacity-70"
+          >0 / 260</span
+        >
       </div>
 
       <button
@@ -53,13 +61,20 @@ import Footer from "@components/Footer.astro";
 
 <script>
   function setupContactForm() {
-    const form = document.getElementById("contact-form") as HTMLFormElement | null;
-    const messageInput = document.getElementById("message") as HTMLTextAreaElement | null;
+    const form = document.getElementById(
+      "contact-form"
+    ) as HTMLFormElement | null;
+    const messageInput = document.getElementById(
+      "message"
+    ) as HTMLTextAreaElement | null;
     const charCountEl = document.getElementById("char-count");
     const statusEl = document.getElementById("form-status");
-    const submitBtn = form?.querySelector("button[type='submit']") as HTMLButtonElement | null;
+    const submitBtn = form?.querySelector(
+      "button[type='submit']"
+    ) as HTMLButtonElement | null;
 
-    if (!form || !messageInput || !charCountEl || !statusEl || !submitBtn) return;
+    if (!form || !messageInput || !charCountEl || !statusEl || !submitBtn)
+      return;
 
     const MAX_CHARS = 260;
 
@@ -75,12 +90,15 @@ import Footer from "@components/Footer.astro";
       }
     });
 
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener("submit", async e => {
       e.preventDefault();
 
-      const name = (form.elements.namedItem("name") as HTMLInputElement).value.trim();
+      const name = (
+        form.elements.namedItem("name") as HTMLInputElement
+      ).value.trim();
       const message = messageInput.value.trim();
-      const honeypot = (form.elements.namedItem("website") as HTMLInputElement).value;
+      const honeypot = (form.elements.namedItem("website") as HTMLInputElement)
+        .value;
 
       if (!name || !message) {
         statusEl.textContent = "Please fill in all fields.";
@@ -115,7 +133,8 @@ import Footer from "@components/Footer.astro";
           charCountEl.classList.remove("text-red-500");
           charCountEl.classList.add("opacity-70");
         } else {
-          statusEl.textContent = data.error || "Something went wrong. Please try again.";
+          statusEl.textContent =
+            data.error || "Something went wrong. Please try again.";
           statusEl.className = "text-sm text-red-500";
         }
       } catch {
