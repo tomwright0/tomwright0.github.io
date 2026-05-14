@@ -28,6 +28,8 @@ Requirements: Bun >= 1.0.0
 
 **Content:** Blog posts live in `src/content/blog/` as Markdown files. The schema is defined in `src/content/config.ts` — required frontmatter fields are `title`, `pubDatetime`, and `description`. Posts with `draft: true` are excluded from listings.
 
+**Scheduled post filter:** `src/utils/postFilter.ts` hides posts in production where `pubDatetime` is in the future (with a 15-minute margin). DEV mode bypasses this, so a post can appear locally but not on the deployed site. Always set `pubDatetime` to a UTC time that has already passed at the time of deployment.
+
 **Serverless:** `functions/api/contact.ts` is a Cloudflare Workers function that validates the contact form (honeypot spam check, 260 char limit) and forwards submissions to a Discord webhook via `DISCORD_WEBHOOK_URL` environment variable.
 
 **Theming:** Uses CSS custom properties for a "skin" color system. Dark mode is toggled via `[data-theme='dark']` selector on the `<html>` element (see `src/utils/toggle-theme.js`). Theme colors are defined in `src/styles/base.css`.
