@@ -1,6 +1,6 @@
 ---
 author: Tom
-pubDatetime: 2026-05-14T12:00:00Z
+pubDatetime: 2026-05-14T01:00:00Z
 title: Recovering a Forgotten HPE Power Protector Password
 slug: recovering-hpe-power-protector-password
 featured: false
