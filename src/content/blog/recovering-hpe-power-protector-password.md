@@ -84,11 +84,14 @@ Not a hash. The `=` prefix marks the value as AES-128-CBC encrypted ciphertext, 
 The `AES` object wraps a native C function:
 
 ```javascript
-var AES =
-{
-  encode: function(input, password) { return File.codec(16, File.codec(8, input, password)); },
-  decode: function(input, password) { return File.codec(9, File.codec(17, input), password); }
-}
+var AES = {
+  encode: function (input, password) {
+    return File.codec(16, File.codec(8, input, password));
+  },
+  decode: function (input, password) {
+    return File.codec(9, File.codec(17, input), password);
+  },
+};
 ```
 
 Mode 8 is AES encrypt, 9 is decrypt, 16/17 are Base64 encode/decode. The actual AES implementation is inside `mc2.exe`, so replicating it externally would mean disassembling the binary to figure out the key derivation and padding. Possible, but not the fastest route.
@@ -98,26 +101,27 @@ Mode 8 is AES encrypt, 9 is decrypt, 16/17 are Base64 encode/decode. The actual 
 The simpler approach is to make the app decrypt it for you. Power Protector has a user scripting system under `configs/scripts/`. Drop a new JS file in there with this content:
 
 ```javascript
-UserScript =
-{
+UserScript = {
   name: "Decrypt",
   enabled: true,
   interval: 5000,
-  action: function()
-  {
+  action: function () {
     try {
-      var hash = UserFunctions.fileRead("C:\\temp\\hash.txt").replace(/\s+/g, "");
+      var hash = UserFunctions.fileRead("C:\\temp\\hash.txt").replace(
+        /\s+/g,
+        ""
+      );
       var key = File.codec(17, "ZS98L3xDsg==");
       var ct = hash;
-      if(ct[0] == "=") ct = ct.substr(1);
+      if (ct[0] == "=") ct = ct.substr(1);
       var pw = File.codec(9, File.codec(17, ct), key);
       UserFunctions.fileWrite("C:\\temp\\decrypted.txt", pw);
-    } catch(e) {
+    } catch (e) {
       UserFunctions.fileWrite("C:\\temp\\error.txt", e.toString());
     }
     UserScript.enabled = false;
-  }
-}
+  },
+};
 ```
 
 Write the target password value to `C:\temp\hash.txt`, restart the service, wait a few seconds, and the plaintext shows up in `C:\temp\decrypted.txt`. The app does its own decryption.
@@ -142,8 +146,8 @@ I had zero reverse engineering experience, but I'd heard about [GhidraMCP](https
 
 The answer was in how the SHA1 hash of the app key gets split:
 
-- **AES key** = SHA1(app\_key)[0:16]
-- **AES IV** = SHA1(app\_key)[4:20]
+- **AES key** = SHA1(app_key)[0:16]
+- **AES IV** = SHA1(app_key)[4:20]
 
 The IV starts at byte 4, overlapping with the tail of the key region. That's what made every blind guess fail. There's no way to know that without reading the assembly.
 
