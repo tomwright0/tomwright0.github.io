@@ -11,6 +11,10 @@ updates:
           - "@astrojs/*"
       dev-dependencies:
         dependency-type: development
+    ignore:
+      # Stay on TS 6 (matches upstream astro-paper; typescript-eslint lacks TS 7 support)
+      - dependency-name: typescript
+        versions: [">=7"]
     open-pull-requests-limit: 10
 
   - package-ecosystem: github-actions

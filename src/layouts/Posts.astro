@@ -21,15 +21,13 @@ const { page } = Astro.props;
   <Header activeNav="posts" />
   <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
     <ul>
-      {
-        page.data.map(({ data, id, body }) => (
-          <Card
-            href={`/posts/${id}/`}
-            frontmatter={data}
-            readingTime={getReadingTime(body)}
-          />
-        ))
-      }
+      {page.data.map(({ data, id, body }) => (
+        <Card
+          href={`/posts/${id}/`}
+          frontmatter={data}
+          readingTime={getReadingTime(body)}
+        />
+      ))}
     </ul>
   </Main>
 
